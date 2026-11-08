@@ -1,7 +1,7 @@
 /*
  * test_student.c -- CS 313 P3: your three hand-traced tests.
  *
- * Name:
+ * Name: Hadi Almarzooq
  *
  * Write three tests. Each one inserts (and maybe deletes) some keys, then
  * checks a traversal with CHECK_PREORDER(t, ...) or CHECK_POSTORDER(t, ...),
@@ -44,18 +44,95 @@
 
 void student_test_1(void) {
     bst *t = bst_create();
-    /* TODO */
+    
+    /* Trace: Insert keys to check preorder.
+             5
+           /   \
+          3     7
+         / \
+        2   4
+        Preorder (Root, Left, Right): 5, 3, 2, 4, 7
+    */
+    bst_insert(t, 5);
+    bst_insert(t, 3);
+    bst_insert(t, 7);
+    bst_insert(t, 2);
+    bst_insert(t, 4);
+
+    CHECK_PREORDER(t, 5, 3, 2, 4, 7);
+    
     bst_destroy(t);
 }
 
 void student_test_2(void) {
     bst *t = bst_create();
-    /* TODO */
+    
+    /* Trace: Insert keys, delete a node (30) with two children 
+       whose successor (35) is NOT its direct right child (40).
+       Initial:
+             10
+            /  \
+           5    30
+               /  \
+             20    40
+                  /  \
+                 35   45
+       After delete(30), 35 replaces it:
+             10
+            /  \
+           5    35
+               /  \
+             20    40
+                     \
+                      45
+        Preorder (Root, Left, Right): 10, 5, 35, 20, 40, 45
+    */
+    bst_insert(t, 10);
+    bst_insert(t, 5);
+    bst_insert(t, 30);
+    bst_insert(t, 20);
+    bst_insert(t, 40);
+    bst_insert(t, 35);
+    bst_insert(t, 45);
+    
+    bst_delete(t, 30);
+
+    CHECK_PREORDER(t, 10, 5, 35, 20, 40, 45);
+    
     bst_destroy(t);
 }
 
 void student_test_3(void) {
     bst *t = bst_create();
-    /* TODO */
+    
+    /* Trace: Insert keys, delete the root (20), then check 
+       postorder and height.
+       Initial:
+             20
+            /  \
+          10    30
+         /  \     \
+        5   15     35
+       After delete(20), successor 30 replaces it:
+             30
+            /  \
+          10    35
+         /  \
+        5   15
+       Postorder (Left, Right, Root): 5, 15, 10, 35, 30
+       Height: 2
+    */
+    bst_insert(t, 20);
+    bst_insert(t, 10);
+    bst_insert(t, 30);
+    bst_insert(t, 5);
+    bst_insert(t, 15);
+    bst_insert(t, 35);
+    
+    bst_delete(t, 20);
+
+    CHECK_POSTORDER(t, 5, 15, 10, 35, 30);
+    CHECK(bst_height(t) == 2);
+    
     bst_destroy(t);
 }
